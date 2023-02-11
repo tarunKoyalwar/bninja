@@ -58,6 +58,7 @@ func FilterLine(line string) bool {
 
 func init() {
 	Filter.Flags().StringVarP(&wordFile, "keywords", "k", "", "Keywords File contains keywords to filter")
+	Filter.Flags().BoolVar(&Insensitive, "ignore-case", false, "Ignore Case")
 	Filter.MarkFlagRequired("keywords")
 	Filter.CompletionOptions.DisableDefaultCmd = true
 }
