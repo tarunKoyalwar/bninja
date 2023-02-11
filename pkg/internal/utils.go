@@ -2,28 +2,29 @@ package internal
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
+	"log"
 	"os"
 )
 
 // ReadAllStdin : Read data from stdin
 func ReadAllStdin() string {
-	bin, err := ioutil.ReadAll(os.Stdin)
+	bin, err := io.ReadAll(os.Stdin)
 	HandleError(err, "failed to read data from stdin")
 	return string(bin)
 }
 
 // ReadFromFile : Reads data from file
 func ReadFromFile(filename string) string {
-	bin, err := ioutil.ReadFile(filename)
-	HandleError(err, "failed to read data from file %v", filename)
+	bin, err := os.ReadFile(filename)
+	HandleError(err, "failed to read data from file `%v`", filename)
 	return string(bin)
 }
 
 func HandleError(er error, format string, a ...any) {
 	if er != nil {
 		fmt.Printf(format+"\n", a...)
-		panic(er)
+		log.Fatal(er)
 	}
 }
 

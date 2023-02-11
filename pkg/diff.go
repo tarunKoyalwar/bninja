@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"log"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -30,17 +31,35 @@ bninja diff file1 file2 -1
 
 //Unique Lines of file2
 bninja diff file1 file2 -2
+
+// Stdin is treated as file1 if only one file is passed in args
+cat file1 | bninja diff file2
 `,
-	Args: cobra.MinimumNArgs(2),
+	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		flagtest := file1 || file2 || common
 		if !flagtest {
-			panic("At least One Flag requireds")
+			log.Fatal("At least One Flag requireds")
 		}
 
-		data1 := internal.ReadFromFile(args[0])
-		data2 := internal.ReadFromFile(args[1])
+		data1 := ""
+		if internal.HasStdin() {
+			data1 = internal.ReadAllStdin()
+		}
+
+		data2 := ""
+
+		if len(args) == 0 {
+			log.Fatal("two data sources are required to compare")
+		} else if len(args) == 1 && data1 != "" {
+			data2 = internal.ReadFromFile(args[0])
+		} else if len(args) == 2 {
+			data1 = internal.ReadFromFile(args[0])
+			data2 = internal.ReadFromFile(args[1])
+		} else {
+			log.Fatal("two data sources are required to compare")
+		}
 
 		map1 := map[string]bool{}
 		map2 := map[string]bool{}

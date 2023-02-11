@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -37,6 +38,9 @@ bninja replace -m "programmer" -r "dev" -c 5
 		if m == "" {
 			return fmt.Errorf("match string not given")
 		}
+
+		m = InterpretString(m)
+		r = InterpretString(r)
 
 		input := synchronousInput(args)
 
@@ -88,4 +92,14 @@ func init() {
 	replace.Flags().BoolVar(&posix, "posix", false, "Use POSIX for regex")
 
 	replace.CompletionOptions.DisableDefaultCmd = true
+}
+
+// Converts a raw string to interpreted string
+func InterpretString(raw string) string {
+	quoted := strconv.Quote(raw)
+	quoted = strings.ReplaceAll(quoted, `\\`, `\`)
+	if unquoted, err := strconv.Unquote(quoted); err == nil {
+		return unquoted
+	}
+	return raw
 }

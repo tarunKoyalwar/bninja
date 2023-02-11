@@ -46,8 +46,8 @@ func init() {
 	hcut.Flags().StringVarP(&delimeter, "delim", "d", "", "Delimeter to Use(Supports Multiple Chars)")
 	hcut.Flags().StringVarP(&fields, "fields", "f", "", "fields/colums but it can be 1-3 or 1,5,6 or 1-3,8 (Inclusive)(starts from 1)")
 
-	hcut.MarkFlagRequired(delimeter)
-	hcut.MarkFlagRequired(fields)
+	_ = hcut.MarkFlagRequired(delimeter)
+	_ = hcut.MarkFlagRequired(fields)
 
 	hcut.CompletionOptions.DisableDefaultCmd = true
 }

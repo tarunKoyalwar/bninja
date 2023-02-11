@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -106,7 +106,7 @@ bninja cut -d "go.mod" -f 2 -i
 			if clipOut {
 				internal.WriteClipboard(buffer.String())
 			} else if out != "" {
-				err := ioutil.WriteFile(out, buff.Bytes(), 0644)
+				err := os.WriteFile(out, buff.Bytes(), 0644)
 				if err != nil {
 					internal.HandleError(err, "Failed to write output to file %v", out)
 				}
@@ -161,9 +161,8 @@ func init() {
 	cut.Flags().StringVarP(&fields, "fields", "f", "", "fields/colums but it can be 1-3 or 1,5,6 or 1-3,8 (Inclusive)(starts from 1)")
 	cut.Flags().BoolVar(&skip, "skip", false, "Skip Lines not containing delimeter")
 
-	cut.MarkFlagRequired(delimeter)
-	cut.MarkFlagRequired(fields)
+	_ = cut.MarkFlagRequired(delimeter)
+	_ = cut.MarkFlagRequired(fields)
 
 	cut.CompletionOptions.DisableDefaultCmd = true
-
 }

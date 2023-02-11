@@ -31,6 +31,7 @@ func init() {
 	rootCMD.AddCommand(unique)
 	rootCMD.AddCommand(urlEnc)
 	rootCMD.AddCommand(cut)
+	rootCMD.AddCommand(Filter)
 
 	rootCMD.PersistentFlags().BoolVarP(&clipIn, "clipin", "i", false, "Import data from clipboard")
 	rootCMD.PersistentFlags().BoolVarP(&clipOut, "clipout", "o", false, "Export data to clipboard")
@@ -39,5 +40,4 @@ func init() {
 	rootCMD.PersistentFlags().StringVar(&out, "out", "", "Export data to File")
 
 	rootCMD.CompletionOptions.DisableDefaultCmd = true
-
 }

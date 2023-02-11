@@ -3,7 +3,6 @@ package pkg
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -61,17 +60,17 @@ func manageOutput(data string) {
 	if clipOut {
 		internal.WriteClipboard(data)
 		if stdout {
-			fmt.Println(data)
+			fmt.Print(data)
 		}
 	} else if out != "" {
 		if stdout {
-			fmt.Println(data)
+			fmt.Print(data)
 		}
-		err := ioutil.WriteFile(out, []byte(data), 0644)
+		err := os.WriteFile(out, []byte(data), 0644)
 		if err != nil {
 			internal.HandleError(err, "Failed to write output to file %v", out)
 		}
 	} else {
-		fmt.Println(data)
+		fmt.Print(data)
 	}
 }
